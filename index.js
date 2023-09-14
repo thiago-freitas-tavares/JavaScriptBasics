@@ -1,3 +1,5 @@
+console.log('Hello, World...');
+
 let firstName = 'Thiago'; // string literal
 let lastName = undefined; // variável sem valor declarado também é undefined
 let age = 35; // number literal (JavaScript não tem int e float)
@@ -5,7 +7,6 @@ let isApproved = true; // boolean literal
 let selectedNumber = null; // object que limpa o valor da variável
 const interestRate = 0.3;
 
-console.log('Hello, World...');
 console.log(firstName, lastName);
 console.log(interestRate);
 
@@ -28,14 +29,16 @@ person.name = 'Xis2hi'; // dot notation
 console.log(person.name);
 
 person['name'] = 'Xisnothi'; // bracket notation
-let selection = 'name';
-person[selection] = 'Xisnothi';
 console.log(person.name);
+
+let selection = 'phone'; // supondo chave phone determinada no runtime
+person['selection'] = '12345';
+console.log(person.selection);
 
 // array
 
 let selectedColor = ['red','blue']; // array literal (tipo lista do python)
-selectedColor[2] = 1;
+selectedColor[2] = 1;  // dynamic language
 console.log(selectedColor);
 console.log(selectedColor[0]);
 console.log(selectedColor[1], selectedColor[2]);
@@ -71,12 +74,12 @@ const firstCircle = {
     y: 1
   },
   draw: function(){
-    console.log('desenhar');
+    console.log('desenha círculo');
   }
 };
 firstCircle.draw();
 
-// factory function (fábrica)
+// factory function (função fábrica)
 
 function createCircle(radius, x, y){
   return {
@@ -86,27 +89,136 @@ function createCircle(radius, x, y){
       y
     },
     draw: function(){
-      console.log('desenhar');
+      console.log('desenha círculo com raio ' + radius);
     }
   };
 }
-const secondCircle = createCircle(1, 1, 1);
+const secondCircle = createCircle(2, 2, 2);
 secondCircle.draw();
-const thirdCircle = createCircle(2, 0, 0);
+const thirdCircle = createCircle(3, 3, 3);
 thirdCircle.draw();
 
-// constructor function (construtor)
+// constructor function (função construtora) - prototypal inheritance
 
-function CircleConstructor(radius, x, y) {
-  console.log('this', this);
+function CircleFunctionConstructor(radius, x, y) {
+  console.log(this);
   this.radius = radius;
   this.location = {
     x,
     y
-  },
+  };
   this.draw = function() {
-    console.log('desenhar');
+    console.log('desenha círculo com raio ' + radius);
+    console.log('desenha círculo com raio ' + this.radius);
   }
 }
-const forthCircle = new CircleConstructor(1, 2, 4);
+const forthCircle = new CircleFunctionConstructor(4, 4, 4);
 forthCircle.draw();
+
+// função construtora (2015 ECMA update) pseudo-classical inheritance
+
+class CircleClassConstructor {
+  constructor(radius, x, y) {
+    console.log(this);
+    this.radius = radius;
+    this.location = {
+      x,
+      y
+    };
+    this.draw = function () {
+      console.log(`desenha círculo com raio ${radius}`);
+      console.log(`desenha círculo com raio ${this.radius}`);
+    }
+  }
+}
+const fifthCircle = new CircleClassConstructor(5, 5, 5);
+fifthCircle.draw();
+
+// constructor properties
+
+console.log(forthCircle.constructor); // retorna a fuction CircleFunctionConstructor
+console.log(fifthCircle.constructor); // retorna a class CircleClassConstructor
+console.log(firstCircle.constructor); // retorna a built-in function Object()
+console.log(secondCircle.constructor); // retorna a built-in function Object()
+
+// funções são objetos em Java Script
+
+console.log(CircleFunctionConstructor.name);
+console.log(CircleFunctionConstructor.length);
+console.log(CircleFunctionConstructor.constructor); // retorna a built-in function Function()
+
+// os parâmetros da função podem ser declarados como strings com '', "" ou ``.
+// `` é utilizado quando se deseja utilizar múltiplas linhas.
+const CircleFunctionConstructorForReal = new Function('radius', 'x', 'y', `
+console.log(this);
+this.radius = radius;
+this.location = {
+  x,
+  y
+};
+this.draw = function() {
+  console.log('desenha círculo com raio ' + radius);
+  console.log('desenha círculo com raio ' + this.radius);
+}
+`);
+
+const forthCircleForReal1 = new CircleFunctionConstructorForReal(4, 0, 0);
+forthCircleForReal1.draw();
+
+// métodos da built-in function Function()
+
+CircleFunctionConstructorForReal.call({}, 6, 6, 6);
+CircleFunctionConstructorForReal.apply({}, [7, 7, 7]);
+
+// primitive/value types e reference types (objects)
+
+let a = 10;
+let b = a;
+a = 20;
+console.log(a, b); // primitivos são copiados por valores
+
+let c = {value: 10};
+let d = c;
+c.value = 20;
+console.log(c, d); // objetos são copiados por referência
+
+//exemplo no manuseio de primitivos
+let number = 10;
+function increase(number) {
+  number++;
+}
+increase(number);
+console.log(number);
+
+// exemplo no manuseio de objetos
+let object = {value: 10};
+function increase(object) {
+  object.value++;
+}
+increase(object);
+console.log(object);
+
+// adding/removing properties
+
+fifthCircle.perimeter = 2*3.1*5; // dot notation
+fifthCircle['perimeter'] = 2*3.1*5; // bracket notation
+console.log(fifthCircle);
+
+// delete fifthCircle.perimeter;
+// delete fifthCircle['perimeter'];
+
+// enumerating properties and/or methods
+
+for (let key in fifthCircle) {
+  if (typeof[key] !== 'function') // filtra apenas propriedades
+    console.log(key, fifthCircle[key]);
+}
+
+const keys = Object.keys(fifthCircle);
+console.log(keys);
+
+if ('radius' in fifthCircle)
+  console.log('fifthCircle has a radius.');
+
+// Abstraction
+
