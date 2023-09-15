@@ -119,7 +119,6 @@ forthCircle.draw();
 
 class CircleClassConstructor {
   constructor(radius, x, y) {
-    console.log(this);
     this.radius = radius;
     this.location = {
       x,
@@ -150,7 +149,6 @@ console.log(CircleFunctionConstructor.constructor); // retorna a built-in functi
 // os parâmetros da função podem ser declarados como strings com '', "" ou ``.
 // `` é utilizado quando se deseja utilizar múltiplas linhas.
 const CircleFunctionConstructorForReal = new Function('radius', 'x', 'y', `
-console.log(this);
 this.radius = radius;
 this.location = {
   x,
@@ -220,5 +218,20 @@ console.log(keys);
 if ('radius' in fifthCircle)
   console.log('fifthCircle has a radius.');
 
-// Abstraction
+// Abstraction - hide the details and show the essentials
+
+function CircleFunctionConstructorAbs(radius, x, y) {
+  this.radius = radius;
+  this.location = { x, y };
+  let defaultlocation = { x: 0, y: 0 };
+  let computeOptimumLocation = function() {
+    // code here
+  }
+  this.draw = function() {
+    computeOptimumLocation();
+    console.log('desenha círculo com raio ' + radius);
+  }
+}
+
+// getters/setters
 

@@ -67,7 +67,15 @@ Node é um programa que inclui o interpretador (máquina virtual) JS V8 do Googl
 
 11. `VS Code`: New Terminal -> Command Prompt -> node index.js -> retorna a mesma mensagem do console.
 
-# JavaScript: Variável (let) e Constante (const)
+# JavaScript: Variável (var/let) e Constante (const)
+
+- em JS toda declaração de variável é elevada/içada (hoisting) ao topo do seu contexto de execução (if, for, while, function), ou seja, ao ser executado, um código roda primeiro as declarações dentro de cada contexto, para depois rodar o restante do código (é possível utilizar uma variável linhas antes de declará-la, pois na execução, o JS faz o hoisting).
+
+- declarar uma variável através da keyword `var` permite com que você a acesse dentro de qualquer escopo do código.
+
+- para declarar variáveis que serão utilizadas apenas dentro de um pequeno trecho do código, utilizamos a keyword `let`, introduzida no ECMAS6, com escopo de bloco (variável será acessível apenas dentro do seu contexto de execução).
+
+- a declaração de constantes com a keyword `const` também tem escopo de bloco.
 
 12. `index.js`: keyword let para declarar variável firstName e registra o conteúdo da variável no console (se nenhum valor for atribuído à variável, ela retorna undefined).
 nome de variáveis em camel notation (1a minúscula, 2a e demais maiúsculas).
@@ -191,6 +199,18 @@ função é um conjunto de declarações que realizam uma tarefa ou calculam um 
 
 31. `index.js`: operador if/in permite verificar se uma determinada propriedade ou método está presente em um objeto.
 
-# Abstraction
+# Abstraction - hide the details and show the essentials
 
-32. 
+- queremos implementar uma propriedade chamada defaultLocation e um método chamado computeOptimumLocation na função construtora CircleFunctionConstructorAbs, e chamá-la dentro da função draw, porém, não queremos que elas sejam acessíveis a quem consome o objeto, pois alterá-las pode bagunçar o objeto.
+
+- além disso, qto mais propriedades/métodos públicos (public interface) houver em um objeto, maior será a complexidade de realizar futuras alterações/ajustes no código. Logo, qto mais propriedades/métodos privados (implementation details) for possível incluir em objetos, melhor.
+
+- qdo utilizamos a keyword this dentro de um construtor para declarar variáveis/funções, elas se tornam propriedades/métodos do objeto, e qdo às declaramos sem a keyword this (apenas let ou const), estamos declarando variáveis/funções locais, que após deixarmos o contexto de execução, elas deixam de existir.
+
+32. `index.js`: keyword let para declarar variável local defaultLocation e função local computeOptimumLocation, lembrando que uma função (neste caso draw) consegue acessar as variáveis/propriedades e funções/métodos de sua função principal (neste caso CircleFunctionConstructorAbs), conceito este chamado closure.
+
+- conceito de scope é temporário: variáveis locais de uma inner function só existem durante a sua execução.
+- conceito de closure é definitivo: quais variáveis serão acessíveis pelas inner functions.
+
+# Getters/Setters
+
