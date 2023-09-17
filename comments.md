@@ -209,8 +209,21 @@ função é um conjunto de declarações que realizam uma tarefa ou calculam um 
 
 32. `index.js`: keyword let para declarar variável local defaultLocation e função local computeOptimumLocation, lembrando que uma função (neste caso draw) consegue acessar as variáveis/propriedades e funções/métodos de sua função principal (neste caso CircleFunctionConstructorAbs), conceito este chamado closure.
 
-- conceito de scope é temporário: variáveis locais de uma inner function só existem durante a sua execução.
+- conceito de scope é temporário: variáveis locais (também chamada de private members do objeto) de uma inner function só existem durante a sua execução.
 - conceito de closure é definitivo: quais variáveis serão acessíveis pelas inner functions.
 
 # Getters/Setters
 
+- utilizando a função construtora CircleFunctionConstructorAbs como base, queremos acessar a variável local defaultLocation fora da função CircleFunctionConstructorGetSet.
+
+- getter: função utilizada para ler (read-only) a propriedade de um objeto.
+- setter: função utilizada para ler e editar a propriedade de um objeto.
+
+33. `index.js`: keyword this para implementar um método chamado getDefaultLocation (getter), que retorna a variável local defaultlocation.
+
+34. `index.js`: outra forma de acessar a variável local é através do built-in method Object.defineProperty(nome do objeto, nome da propriedade, key-value pairs).
+desta forma, é possível acessar a defaultLocation diretamente para somente leitura através da keyword get e para edição através da keyword set.
+
+# Exercício
+
+- implementar um Stopwatch com os métodos start, stop, reset e a propriedade duration (tempo ligado).

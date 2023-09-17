@@ -127,7 +127,7 @@ class CircleClassConstructor {
     this.draw = function () {
       console.log(`desenha círculo com raio ${radius}`);
       console.log(`desenha círculo com raio ${this.radius}`);
-    }
+    };
   }
 }
 const fifthCircle = new CircleClassConstructor(5, 5, 5);
@@ -223,15 +223,81 @@ if ('radius' in fifthCircle)
 function CircleFunctionConstructorAbs(radius, x, y) {
   this.radius = radius;
   this.location = { x, y };
-  let defaultlocation = { x: 0, y: 0 };
+  let defaultLocation = { x: 0, y: 0 };
   let computeOptimumLocation = function() {
     // code here
-  }
+  };
   this.draw = function() {
     computeOptimumLocation();
     console.log('desenha círculo com raio ' + radius);
-  }
+  };
 }
+const sixthCircle = new CircleFunctionConstructorAbs(6, 6, 6);
+console.log(sixthCircle);
 
 // getters/setters
 
+function CircleFunctionConstructorGetSet(radius, x, y) {
+  this.radius = radius;
+  this.location = { x, y };
+  let defaultLocation = { x: 0, y: 0 };
+  this.getDefaultLocation = function () {
+    return defaultLocation;
+  };
+  this.draw = function() {
+    console.log('desenha círculo com raio ' + radius);
+  };
+  Object.defineProperty(this, 'defaultLocation', {
+    get: function() {
+      return defaultLocation;
+    },
+    set: function(value) {
+      if (!value.x || !value.y) // se definir errado, apresenta este erro
+        throw new Error('Invalid Location.'); // built-in constructor Error
+      defaultLocation = value;
+    }
+  });
+}
+const seventhCircle = new CircleFunctionConstructorGetSet(7, 7, 7);
+console.log(seventhCircle);
+console.log(seventhCircle.getDefaultLocation()); // não é legal chamar como método
+console.log(seventhCircle.defaultLocation); // getter
+seventhCircle.defaultLocation = { x: 1, y: 1 }; // setter
+console.log(seventhCircle.defaultLocation);
+
+// Exercício - Stopwatch
+
+function Stopwatch() {
+    
+  let startTime, endTime, running, duration = 0;
+   
+  this.start = function() {
+    if (running)
+      throw new Error('Stopwatch has already started.');
+    running = true;
+    startTime = new Date(); // milisegundos
+    };
+
+  this.stop = function() {
+    if (!running)
+      throw new Error('Stopwatch is not started.');
+    running = false;
+    endTime = new Date();
+    const seconds = (endTime.getTime() - startTime.getTime()) / 1000;
+    duration += seconds;
+  };
+
+  this.reset = function() {
+    startTime = null;
+    endTime = null;
+    running = false;
+    duration = 0;
+  };
+
+  Object.defineProperty(this, 'duration', {
+    get: function() {
+      return duration;
+    }
+  });
+
+}
